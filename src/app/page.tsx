@@ -75,7 +75,7 @@ export default function Home() {
     };
 
     updateChart();
-    const interval = setInterval(updateChart, 1000);
+    const interval = setInterval(updateChart, 30000);
 
     return () => clearInterval(interval);
   }, []);
