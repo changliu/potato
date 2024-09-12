@@ -47,7 +47,7 @@ export default function Home() {
         },
         options: {
           responsive: true, // Makes the chart responsive
-          maintainAspectRatio: false, // Allows better control of the aspect ratio
+        //   maintainAspectRatio: false, // Allows better control of the aspect ratio
           scales: {
             x: {
               type: 'time',
