@@ -46,13 +46,13 @@ export default function Home() {
           ],
         },
         options: {
-            responsive: true, // Makes the chart responsive
-        maintainAspectRatio: false, // Allows better control of the aspect ratio
+          responsive: true, // Makes the chart responsive
+          maintainAspectRatio: false, // Allows better control of the aspect ratio
           scales: {
             x: {
               type: 'time',
               time: {
-                unit: 'second',
+                unit: 'hour', // Display in hours
               },
             },
           },
@@ -62,11 +62,20 @@ export default function Home() {
 
     const updateChart = async () => {
       const fetchedData = await fetchData();
-      setData(fetchedData);
+      const now = new Date();
+      const twelveHoursAgo = new Date(now.getTime() - 12 * 60 * 60 * 1000); // 12 hours ago
 
-      const newTimestamps = fetchedData.map(item => item.timestamp);
-      const newTemperatures = fetchedData.map(item => item.temperature);
-      const newHumidities = fetchedData.map(item => item.humidity);
+      // Filter data to show only the last 12 hours
+      const filteredData = fetchedData.filter(item => {
+        const timestamp = new Date(item.timestamp);
+        return timestamp >= twelveHoursAgo;
+      });
+
+      setData(filteredData);
+
+      const newTimestamps = filteredData.map(item => item.timestamp);
+      const newTemperatures = filteredData.map(item => item.temperature);
+      const newHumidities = filteredData.map(item => item.humidity);
 
       if (chartRef.current) {
         chartRef.current.data.labels = newTimestamps;
@@ -77,7 +86,7 @@ export default function Home() {
     };
 
     updateChart();
-    const interval = setInterval(updateChart, 30000);
+    const interval = setInterval(updateChart, 30000); // Update every 30 seconds
 
     return () => clearInterval(interval);
   }, []);
