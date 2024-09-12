@@ -63,12 +63,12 @@ export default function Home() {
     const updateChart = async () => {
       const fetchedData = await fetchData();
       const now = new Date();
-      const twelveHoursAgo = new Date(now.getTime() - 12 * 60 * 60 * 1000); // 12 hours ago
-      const minute = 60 * 1000;
-      // Filter data to show only the last 12 hours and only on the minute (with 2 sec margin)
+      const dataPointCutOff = new Date('2024-09-12T11:00:00-08:00');  // This is when we started collecting data every 2min
+
+      // Filter data to show only only on the minute (with 2 sec margin)
       const filteredData = fetchedData.filter(item => {
         const timestamp = new Date(item.timestamp);
-        return timestamp >= twelveHoursAgo && timestamp.getSeconds() <= 2;
+        return timestamp < dataPointCutOff ? timestamp.getSeconds() <= 2 : true;
       });
 
       setData(filteredData);
