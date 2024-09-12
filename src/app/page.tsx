@@ -64,11 +64,11 @@ export default function Home() {
       const fetchedData = await fetchData();
       const now = new Date();
       const twelveHoursAgo = new Date(now.getTime() - 12 * 60 * 60 * 1000); // 12 hours ago
-
-      // Filter data to show only the last 12 hours
+      const minute = 60 * 1000;
+      // Filter data to show only the last 12 hours and only on the minute (with 2 sec margin)
       const filteredData = fetchedData.filter(item => {
         const timestamp = new Date(item.timestamp);
-        return timestamp >= twelveHoursAgo;
+        return timestamp >= twelveHoursAgo && timestamp.getSeconds() <= 2;
       });
 
       setData(filteredData);
